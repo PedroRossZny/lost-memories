@@ -22,7 +22,7 @@ win = pygame.Window(size=(1280, 720))
 surf = win.get_surface()
 
 # animação antes do menu
-fade_in(win, vine, duration=1, step=5, title="LOST MEMORIES", font=jersey_font_big, font_percent=20, margin_top_percent=10)
+fade_in(win, vine, duration=8, step=5, title="LOST MEMORIES", font=jersey_font_big, font_percent=20, margin_top_percent=10)
 
 # jogo rodando
 running = True
