@@ -1,6 +1,6 @@
 import pygame
 from fonts import get_font
-from visuals import draw_edge
+from visuals import place_border
 
 # fonte base
 base_font = get_font("jersey", 64)
@@ -25,7 +25,7 @@ def draw_title(surface, text="LOST MEMORIES", font=None, margin_top_percent=10):
     text_rect.top = int(surface.get_height() * (margin_top_percent / 100))
 
     # borda
-    draw_edge(surface, text_rect.width, text_rect.height, margin_h=50, margin_v=20, align="center", margin_top_percent=margin_top_percent)
+    place_border(surface, "images/edge1200x320.png", percent_x=50, margin_top_percent=1.5)
 
     # texto
     surface.blit(text_surface, text_rect)
@@ -43,14 +43,11 @@ def draw_options(surface, options, font=None, margin_bottom_percent=5, spacing=5
     if font is None:
         font = base_font
 
-    longest = max(options, key=lambda opt: font.size(opt)[0])
-    longest_width, _ = font.size(longest)
-
-    # borda
-    draw_edge(surface, longest_width, longest_width, margin_h=50, margin_v=0, align="center", margin_bottom_percent=margin_bottom_percent)
-
     # último item da lista
     start_y = surface.get_height() - int(surface.get_height() * (margin_bottom_percent / 100))
+
+    # borda
+    place_border(surface, "images/edge350x250.png", percent_x=50, margin_bottom_percent=2.5)
 
     for i, option in enumerate(reversed(options)):
         text_surface = font.render(option, True, (255, 255, 255))
