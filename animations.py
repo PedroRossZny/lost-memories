@@ -49,3 +49,15 @@ def fade_in(window, color, duration=2.0, step=5, title=None, font=None, font_per
 
         window.flip()
         time.sleep(delay)
+
+def breath_step(step, pixels=1, hold=2):
+    """
+    Calcula o deslocamento Y para animação de respiro.
+    :param step: Contador de frames (int).
+    :param pixels: Quantidade de pixels para deslocar.
+    :param hold: Quantos frames cada etapa permanece (delay entre movimentos).
+    :return: Deslocamento em Y (int).
+    """
+    sequence = [0, -pixels, -pixels, -pixels, 0, +pixels, +pixels, +pixels]
+    index = (step // hold) % len(sequence)
+    return sequence[index]
