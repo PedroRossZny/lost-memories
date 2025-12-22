@@ -31,33 +31,6 @@ def draw_title(surface, text="LOST MEMORIES", font=None, margin_top_percent=10, 
     # texto
     surface.blit(text_surface, text_rect)
 
-def draw_options(surface, options, font=None, margin_bottom_percent=5, spacing=50):
-    """
-    Opções.
-    :param surface: Surface do jogo.
-    :param options: Lista de strings.
-    :param font: Fonte usada (se None, usa base_font).
-    :param margin_bottom_percent: Margem inferior em porcentagem da altura da tela.
-    :param spacing: Espaçamento em pixels entre cada opção.
-    :return: Desenha opções centralizadas horizontalmente, alinhadas de baixo para cima.
-    """
-    if font is None:
-        font = base_font
-
-    # último item da lista
-    start_y = surface.get_height() - int(surface.get_height() * (margin_bottom_percent / 100))
-
-    # borda
-    place_border(surface, "images/edge400x300.png", percent_x=50, margin_bottom_percent=-0.5)
-
-    for i, option in enumerate(reversed(options)):
-        text_surface = font.render(option, True, (255, 255, 255))
-        text_rect = text_surface.get_rect()
-        text_rect.centerx = surface.get_width() // 2
-        text_rect.bottom = start_y - (i * spacing)
-
-        surface.blit(text_surface, text_rect)
-
 def draw_title_shadow(surface, text="LOST MEMORIES", font=None, margin_top_percent=10, offset_y=0):
     """
     Função para a sombra do título.
@@ -80,26 +53,64 @@ def draw_title_shadow(surface, text="LOST MEMORIES", font=None, margin_top_perce
     # texto
     surface.blit(text_surface, text_rect)
 
-def draw_options_shadow(surface, options, font=None, margin_bottom_percent=5, spacing=50):
+def draw_option(surface, text, text_color, shadow_color, text_font, shadow_font, shadow_distance, margin_bottom_percent, spacing_bottom, percent_x, index=0, hover_color=(255, 255, 150)):
     """
-    Sombra das opções.
+    Desenha uma única opção com sombra.
     :param surface: Surface do jogo.
-    :param options: Lista de strings.
-    :param font: Fonte usada (se None, usa base_font).
+    :param text: Texto da opção.
+    :param text_color: Cor RGB do texto.
+    :param shadow_color: Cor RGB da sombra.
+    :param text_font: Fonte do texto.
+    :param shadow_font: Fonte da sombra.
+    :param shadow_distance: Distância vertical da sombra em pixels.
     :param margin_bottom_percent: Margem inferior em porcentagem da altura da tela.
-    :param spacing: Espaçamento em pixels entre cada opção.
-    :return: Desenha opções centralizadas horizontalmente, alinhadas de baixo para cima.
+    :param spacing_bottom: Espaçamento em pixels entre opções.
+    :param percent_x: Posição horizontal em porcentagem (0 esquerda, 50 centro, 100 direita).
+    :param index: Índice da opção (0 = última, 1 = acima, etc).
+    :param hover_color: Cor do texto no hover.
+    :return: Opção ou lista de opções na tela.
     """
-    if font is None:
-        font = base_font
+    # posição base (última opção)
+    start_y = surface.get_height() - int(surface.get_height() * (margin_bottom_percent / 100))
+    option_y = start_y - (index * spacing_bottom)
 
-    # último item da lista de sombras
-    start_y = surface.get_height() - int(surface.get_height() * margin_bottom_percent / 100)
+    # posição horizontal
+    center_x = int(surface.get_width() * (percent_x / 100))
 
-    for i, option in enumerate(reversed(options)):
-        text_surface = font.render(option, True, (0, 0, 0))
+    # rect base para detectar hover
+    text_surface =  text_font.render(text, True, text_color)
+    text_rect = text_surface.get_rect()
+    text_rect.centerx = center_x
+    text_rect.bottom = option_y
+
+    mouse_pos = pygame.mouse.get_pos()
+    is_hover = text_rect.collidepoint(mouse_pos)
+
+    if is_hover:
+        # render sombra maior
+        shadow_surface = shadow_font.render(text, True, shadow_color)
+        shadow_rect = shadow_surface.get_rect()
+        shadow_rect.centerx =  center_x
+        shadow_rect.bottom = option_y + shadow_distance
+        surface.blit(shadow_surface, shadow_rect)
+
+        # render texto maior e cor de hover
+        text_surface = shadow_font.render(text, True, hover_color)
         text_rect = text_surface.get_rect()
-        text_rect.centerx = surface.get_width() // 2
-        text_rect.bottom = start_y - (i * spacing)
+        text_rect.centerx = center_x
+        text_rect.bottom = option_y
+        surface.blit(text_surface, text_rect)
+    else:
+        # render sombra normal
+        shadow_surface =  shadow_font.render(text, True, shadow_color)
+        shadow_rect = shadow_surface.get_rect()
+        shadow_rect.centerx = center_x
+        shadow_rect.bottom = option_y + shadow_distance
+        surface.blit(shadow_surface, shadow_rect)
 
+        # render texto normal
+        text_surface = text_font.render(text, True, text_color)
+        text_rect = text_surface.get_rect()
+        text_rect.centerx = center_x
+        text_rect.bottom = option_y
         surface.blit(text_surface, text_rect)

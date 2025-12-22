@@ -1,7 +1,8 @@
 import pygame
 from animations import fade_in, breath_step
 from fonts import get_font
-from menu import draw_title, draw_options, draw_title_shadow, draw_options_shadow
+from menu import draw_title, draw_title_shadow, draw_option
+from visuals import place_border
 
 pygame.init()
 
@@ -49,13 +50,16 @@ while running:
     step += 1
 
     # título
-    draw_title_shadow(surf, text="LOST MEMORIES", font=jersey_font_big_shadow, margin_top_percent=10, offset_y=offset)
+    draw_title_shadow(surf, text="LOST MEMORIES", font=jersey_font_big_shadow, margin_top_percent=11, offset_y=offset)
     draw_title(surf, text="LOST MEMORIES", font=jersey_font_big, margin_top_percent=10, offset_y=offset)
+
+    # borda das opções
+    place_border(surf, "images/edge443x332.png", percent_x=50, margin_bottom_percent=-1)
 
     # opções
     menu_options = ["Play", "Settings", "Controls", "Credits", "Exit"]
-    draw_options_shadow(surf, menu_options, font=jersey_font_small_shadow, margin_bottom_percent=4.5, spacing=42)
-    draw_options(surf, menu_options, font=jersey_font_small, margin_bottom_percent=5.2, spacing=42)
+    for i, option in enumerate(reversed(menu_options)):
+        draw_option(surf, text=option, text_color=(255, 255, 255), shadow_color=(0, 0, 0), text_font=jersey_font_small, shadow_font=jersey_font_small_shadow, shadow_distance=6, margin_bottom_percent=5.3, spacing_bottom=49, percent_x=50, index=i, hover_color=(255, 255, 150))
 
     win.flip()
     clock.tick(60) # 60 FPS
