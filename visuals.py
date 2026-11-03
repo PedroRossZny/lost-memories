@@ -1,4 +1,11 @@
 import pygame
+from functools import lru_cache
+
+
+@lru_cache(maxsize=None)
+def load_image(image_path):
+    """Loads an image once and reuses it on later frames."""
+    return pygame.image.load(image_path)
 
 def place_border(surface, image_path, percent_x=50, margin_top_percent=None, margin_bottom_percent=None):
     """
@@ -10,7 +17,7 @@ def place_border(surface, image_path, percent_x=50, margin_top_percent=None, mar
     :param margin_bottom_percent: Margem inferior em porcentagem da altura da tela.
     :return: Rect da borda desenhada.
     """
-    border_image = pygame.image.load(image_path)
+    border_image = load_image(image_path)
     border_rect = border_image.get_rect()
 
     # posicionamento horizontal
