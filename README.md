@@ -39,6 +39,8 @@ python3 main.py
 
 ## Credits
 
+The border images in [`images/`](images) were drawn by me.
+
 The [Jersey 10](https://fonts.google.com/specimen/Jersey+10) font is by Sarah Cadigan-Fried and is distributed under the SIL Open Font License 1.1 ([`fonts/OFL.txt`](fonts/OFL.txt)).
 
 ## License
